@@ -1,0 +1,66 @@
+{
+  "manifestVersion": 1,
+  "id": "Promote",
+  "name": "Promote",
+  "version": "1.0.0",
+  "publisher": "Haplo",
+  "public" : false,
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/Haplo-tech/promote"
+  },
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "content": {
+    "details": {
+      "path": "README.md"
+    },
+    "license": {
+      "path": "LICENSE"
+    }
+  },
+  "tags": [
+    "promote",
+    "package",
+    "nuget",
+    "release"
+  ],
+  "links": {
+    "home": {
+      "uri": "https://haplo.com.au"
+    },
+    "repository": {
+      "uri": "https://github.com/Haplo-tech/promote"
+    },
+    "issues": {
+      "uri": "https://github.com/Haplo-tech/promote/issues"
+    }
+  },
+  "description": "Tool to allow the promotion of a package to a specified view.",
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "icons": {
+    "default": "dist/promote-icon.png"
+  },
+  "files": [
+    {
+      "path": "dist"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "promote-build-release-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "dist"
+      }
+    }
+  ]
+}
