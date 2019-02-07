@@ -66,3 +66,4 @@ tests/**/*.map
 src/**/*.js
 src/**/*.map
 .idea/
+dist/
