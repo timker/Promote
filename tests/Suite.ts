@@ -26,7 +26,7 @@ describe('Task tests', function () {
         assert.equal(tr.succeeded, false, 'should have failed');
         assert.equal(tr.warningIssues.length, 0, "should have no warnings");
         assert.equal(tr.errorIssues.length, 1, "should have no errors");
-        assert.equal(tr.errorIssues[0], 'Failed request: (401)', 'error issue output');
+        assert.equal(tr.errorIssues[0], 'Organization name could not be found.', 'error issue output');
         done();
     });
 
