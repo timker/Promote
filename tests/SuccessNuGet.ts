@@ -3,7 +3,7 @@ import {TaskLibAnswers} from "azure-pipelines-task-lib/mock-answer";
 import * as nock from 'nock';
 import * as path from 'path';
 
-let taskPath = path.join(__dirname, '../scripts/', 'Task.js');
+let taskPath = path.join(__dirname, '../src/', 'Task.js');
 let tmr: TaskMockRunner = new TaskMockRunner(taskPath);
 
 let answers: TaskLibAnswers = {
