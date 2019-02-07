@@ -4,7 +4,7 @@
     "publisher": "Haplo",
     "targets": "",
     "friendlyName": "Promote packages",
-    "description": "Promote packages from a release task.",
+    "description": "Promote NuGet packages packages.",
     "category": "Package",
     "visibility": [
         "Release"
