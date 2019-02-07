@@ -2,7 +2,7 @@
   "name": "promote",
   "version": "1.1.0",
   "description": "Task to promote packages",
-  "main": "index.js",
+  "main": "./src/Task.js",
   "scripts": {
     "build": "tsc -p src/",
     "clean": "rm -r dist",
