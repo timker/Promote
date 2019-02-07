@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p src/",
     "clean": "rm -r dist",
-    "test": "nyc mocha tests/Suite.js",
+    "test": "tsc && nyc mocha tests/Suite.js",
     "postbuild": "copy-node-modules ./ dist ; cp ./src/icon.png dist/ ; cp task.json dist/",
     "package:tfx": "tfx extension create --manifest-globs vss-extension.json"
   },
