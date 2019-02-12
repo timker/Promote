@@ -43,6 +43,10 @@
   "categories": [
     "Azure Pipelines"
   ],
+  "branding": {
+    "color": "rgb(10, 219, 212)",
+    "theme": "dark"
+  },
   "icons": {
     "default": "promote-package/icon.png"
   },
