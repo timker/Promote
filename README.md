@@ -1,6 +1,8 @@
 ## Promote  
 Promote packages on VSTS  
 
+[Changes](./CHANGELOG.md)  
+
 ### About  
 Supported packages are:  
 * NuGet  
