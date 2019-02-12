@@ -44,11 +44,11 @@
     "Azure Pipelines"
   ],
   "icons": {
-    "default": "dist/icon.png"
+    "default": "promote-package/icon.png"
   },
   "files": [
     {
-      "path": "dist"
+      "path": "promote-package"
     }
   ],
   "contributions": [
@@ -59,7 +59,7 @@
         "ms.vss-distributed-task.tasks"
       ],
       "properties": {
-        "name": "dist"
+        "name": "promote-package"
       }
     }
   ]

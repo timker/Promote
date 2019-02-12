@@ -2,12 +2,12 @@
   "name": "promote",
   "version": "1.0.0",
   "description": "Task to promote packages",
-  "main": "./src/Task.js",
+  "main": "./promote-package/Task.js",
   "scripts": {
     "build": "tsc -p src/",
-    "clean": "rm -r dist",
+    "clean": "rm -r promote-package ; rm *.vsix",
     "test": "tsc && nyc mocha tests/Suite.js",
-    "postbuild": "copy-node-modules ./ dist ; cp ./src/icon.png dist/ ; cp task.json dist/",
+    "postbuild": "copy-node-modules ./ promote-package ; cp task.json promote-package/ ; cp ./src/icon.png promote-package/",
     "package:tfx": "tfx extension create --manifest-globs vss-extension.json"
   },
   "repository": {
