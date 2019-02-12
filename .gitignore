@@ -67,3 +67,4 @@ src/**/*.js
 src/**/*.map
 .idea/
 promote-package/
+*.vsix
