@@ -5,7 +5,7 @@
   "description": "Tool to allow the promotion of a package to a specified view.",
   "version": "1.0.0",
   "publisher": "Haplo",
-  "public" : false,
+  "Public": true,
   "repository": {
     "type": "git",
     "uri": "https://github.com/Haplo-tech/promote"
