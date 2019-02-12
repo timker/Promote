@@ -3,7 +3,7 @@
     "module": "commonjs",
     "target": "es6",
     "typeRoots": ["node_modules/@types"],
-    "outDir": "../dist"
+    "outDir": "../promote-package"
   },
   "exclude": [
     "../node_modules"
