@@ -3,7 +3,7 @@
     "name": "Promote",
     "publisher": "Haplo",
     "friendlyName": "Promote packages",
-    "description": "Promote NuGet packages packages.",
+    "description": "Promote a NuGet package.",
     "category": "Package",
     "visibility": [
         "Release"
