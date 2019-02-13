@@ -1,7 +1,7 @@
 {
   "name": "promote",
-  "version": "1.0.0",
-  "description": "Task to promote packages",
+  "version": "1.0.4",
+  "description": "Update NuGet packages.",
   "main": "./promote-package/Task.js",
   "scripts": {
     "build": "tsc -p src/",
