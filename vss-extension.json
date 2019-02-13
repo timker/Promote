@@ -48,7 +48,7 @@
     "theme": "dark"
   },
   "icons": {
-    "default": "promote-package/icon.png"
+    "default": "images/icon.png"
   },
   "files": [
     {

@@ -7,7 +7,7 @@
     "build": "tsc -p src/",
     "clean": "rm -r promote-package ; rm *.vsix",
     "test": "tsc && nyc mocha tests/Suite.js",
-    "postbuild": "copy-node-modules ./ promote-package ; cp task.json promote-package/ ; cp ./src/icon.png promote-package/",
+    "postbuild": "copy-node-modules ./ promote-package ; cp task.json promote-package/ ; cp -r ./images/icon.png promote-package/",
     "package:tfx": "tfx extension create --manifest-globs vss-extension.json"
   },
   "repository": {
