@@ -3,7 +3,7 @@
   "id": "Promote",
   "name": "Promote",
   "description": "Tool to allow the promotion of a package to a specified view.",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "publisher": "Haplo",
   "Public": true,
   "repository": {

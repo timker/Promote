@@ -22,12 +22,15 @@ export class AzureService implements IAzureService
         let regexGroup: RegExpMatchArray = teamFoundationServerUri.match(/(?:http[s]*:\/\/)(?:.*)(?:\/)(.*)(?:\/)/);
 
         if (regexGroup == null || regexGroup.length != 2)
-            throw new Error("Organization name could not be found.");
+        {
+            regexGroup = teamFoundationServerUri.match(/(?:http[s]*:\/\/)(.[^.]*)(?:.*)/);
 
-        let organisationName = regexGroup[1];
+            if(regexGroup == null || regexGroup.length != 2)
+                throw new Error("Organization name could not be found.");
+        }
 
-        console.log(`Organisation name: ${organisationName}`);
+        console.log(`Organisation name: ${regexGroup[1]}`);
 
-        return organisationName;
+        return regexGroup[1];
     }
 }

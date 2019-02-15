@@ -1,7 +1,7 @@
 import {PackageDetails} from "../Interfaces/PackageDetails";
 import {ClientBase} from "./ClientBase";
 import {JsonPatchOperation, Operation, RequestBody} from "../Interfaces/NuGetArtifactInterfaces";
-import {IHeaders, IRequestHandler, IRequestOptions} from "typed-rest-client/Interfaces";
+import {IHeaders, IRequestHandler} from "typed-rest-client/Interfaces";
 import {HttpClient} from "typed-rest-client/HttpClient";
 
 export interface INuGetArtifactAPI extends ClientBase

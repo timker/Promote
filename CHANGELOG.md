@@ -1,3 +1,6 @@
+### 1.1.0 - 14/02/2019
+* Support address formats https://organisationName.visualstudio.com and https://dev.visualstudio.com/organisationName
+
 ### 1.0.4 - 13/02/2019 
 * Update task description 
 

@@ -16,20 +16,6 @@ describe('Task tests', function () {
         done();
     });
 
-    it('NuGet Package failure', (done: MochaDone) => {
-        this.timeout(1000);
-
-        let tp = path.join(__dirname, 'FailureNuGet.js');
-        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
-
-        tr.run();
-        assert.equal(tr.succeeded, false, 'should have failed');
-        assert.equal(tr.warningIssues.length, 0, "should have no warnings");
-        assert.equal(tr.errorIssues.length, 1, "should have no errors");
-        assert.equal(tr.errorIssues[0], 'Organization name could not be found.', 'error issue output');
-        done();
-    });
-
     it('Feed input not set', (done: MochaDone) => {
         this.timeout(1000);
         let tp = path.join(__dirname, 'FailureFeedInputNotSet.js');
