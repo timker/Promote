@@ -1,3 +1,6 @@
+### 1.1.1 - 15/02/2019
+Update how to documentation.
+
 ### 1.1.0 - 14/02/2019
 * Support address formats https://organisationName.visualstudio.com and https://dev.visualstudio.com/organisationName
 

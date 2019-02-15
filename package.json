@@ -1,13 +1,13 @@
 {
   "name": "promote",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Update NuGet packages.",
   "main": "./promote-package/Task.js",
   "scripts": {
     "build": "tsc -p src/",
     "clean": "rm -r promote-package ; rm *.vsix",
     "test": "tsc && nyc mocha tests/Suite.js",
-    "postbuild": "copy-node-modules ./ promote-package ; cp task.json promote-package/ ; cp -r ./images/icon.png promote-package/",
+    "postbuild": "copy-node-modules ./ promote-package ; cp task.json promote-package/ ; cp ./images/icon.png promote-package/ ; cp ./images/how-to.png promote-package/",
     "package:tfx": "tfx extension create --manifest-globs vss-extension.json"
   },
   "repository": {
