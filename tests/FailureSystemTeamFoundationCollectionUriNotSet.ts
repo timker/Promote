@@ -7,8 +7,10 @@ let taskPath = path.join(__dirname, '../src', 'Task.js');
 let tmr: TaskMockRunner = new TaskMockRunner(taskPath);
 
 let answers: TaskLibAnswers = {
-    checkPath: {
-        "c:\\workspace\\artifact\\package.1.2.0.10000.nupkg":true
+    "findMatch": {
+        "c:\\workspace\\artifact\\*.nupkg": [
+            "c:\\workspace\\artifact\\package.nuget.1.2.0.10000.nupkg"
+        ]
     }
 };
 
@@ -16,8 +18,7 @@ tmr.setAnswers(answers);
 
 tmr.setInput('feed', 'feed-id');
 tmr.setInput('view', 'view-id');
-tmr.setInput('package', "c:\\workspace\\artifact\\package.1.2.0.10000.nupkg");
-//process.env["SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"] = "https://abc.visualstudio.com/";
+tmr.setInput('package', "c:\\workspace\\artifact\\*.nupkg");
 process.env['ENDPOINT_AUTH_SYSTEMVSSCONNECTION'] = "{\"parameters\":{\"AccessToken\":\"token\"},\"scheme\":\"OAuth\"}";
 
 nock('https://feeds.dev.azure.com',

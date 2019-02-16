@@ -27,11 +27,9 @@ export interface IClientBase
 
 export class ClientBase implements IClientBase
 {
-    private readonly AzureService:AzureService;
     public readonly OrganizationName:string;
     constructor() {
-        this.AzureService = new AzureService();
-        this.OrganizationName = this.AzureService.getOrganizationName();
+        this.OrganizationName = AzureService.getOrganizationName();
     }
 
     public createAcceptHeader(

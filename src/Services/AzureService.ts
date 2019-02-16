@@ -1,19 +1,11 @@
 import * as tl from 'azure-pipelines-task-lib/task';
 
-export interface IAzureService
+export class AzureService
 {
     /**
      * Retrieve the organisation name.
      */
-    getOrganizationName() : string;
-}
-
-export class AzureService implements IAzureService
-{
-    /**
-     * Retrieve the organisation name.
-     */
-    public getOrganizationName() : string {
+    static getOrganizationName() : string {
         let teamFoundationServerUri:string = tl.getVariable("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI");
 
         if(teamFoundationServerUri == null || teamFoundationServerUri.trim() == "")
@@ -32,5 +24,28 @@ export class AzureService implements IAzureService
         console.log(`Organisation name: ${regexGroup[1]}`);
 
         return regexGroup[1];
+    }
+
+    static expandPackageWildcardPatterns(packagePattern: string): string {
+        const matchedSolutionFiles = tl.findMatch(
+            null,
+            packagePattern,
+            {
+                followSymbolicLinks: false,
+                followSpecifiedSymbolicLink: false,
+                allowBrokenSymbolicLinks : true
+            });
+
+        tl.debug(`Found ${matchedSolutionFiles.length} solution files matching the pattern.`);
+
+        if (matchedSolutionFiles.length > 0) {
+            const result = matchedSolutionFiles[0];
+            if (matchedSolutionFiles.length > 1)
+                tl.warning(tl.loc('MultiplePackagesFound', result));
+
+            return result;
+        } else {
+            throw tl.loc('PackageDoesNotExist', packagePattern);
+        }
     }
 }
