@@ -6,6 +6,9 @@ Promote packages on VSTS
 ### About  
 Supported packages are:  
 * NuGet  
+* NPM  
+* Python  
+* Universal  
 
 ### Usage  
 Pre-conditions:  

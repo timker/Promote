@@ -68,3 +68,4 @@ src/**/*.map
 .idea/
 promote-package/
 *.vsix
+*.taskkey
