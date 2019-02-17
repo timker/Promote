@@ -1,3 +1,10 @@
+### 1.3.1 18/02/2019
+* Update readme supported section  
+
+### 1.3.0 18/02/2019
+* Add support for NPM, Python, and Universal  
+* Refactor code to deal with protocol types and move nuget functionality artifact provider  
+
 ### 1.2.0 16/02/2019
 * Add support for wildcard paths
 
