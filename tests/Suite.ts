@@ -3,15 +3,41 @@ import * as assert from 'assert';
 import * as ttm from 'azure-pipelines-task-lib/mock-test';
 
 describe('Task tests', function () {
-    it('NuGet Package success', (done: MochaDone) => {
+    it('NuGet package path contains wild card success', (done: MochaDone) => {
         this.timeout(1000);
 
-        let tp = path.join(__dirname, 'SuccessNuGet.js');
+        let tp = path.join(__dirname, 'SuccessWildCardPathNuGet.js');
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
         tr.run();
         assert.equal(tr.succeeded, true, 'should have succeeded');
         assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+        assert.equal(tr.errorIssues.length, 0, "should have no errors");
+        done();
+    });
+
+    it('NuGet package path does not contain wild card success', (done: MochaDone) => {
+        this.timeout(1000);
+
+        let tp = path.join(__dirname, 'SuccessWithoutWildCardPathNuGet.js');
+        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+        tr.run();
+        assert.equal(tr.succeeded, true, 'should have succeeded');
+        assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+        assert.equal(tr.errorIssues.length, 0, "should have no errors");
+        done();
+    });
+
+    it('NuGet package path contains multiple wild card success', (done: MochaDone) => {
+        this.timeout(1000);
+
+        let tp = path.join(__dirname, 'SuccessWildCardMultiplePackagesPathNuGet.js');
+        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+        tr.run();
+        assert.equal(tr.succeeded, true, 'should have succeeded');
+        assert.equal(tr.warningIssues.length, 1, "should have no warnings");
         assert.equal(tr.errorIssues.length, 0, "should have no errors");
         done();
     });
@@ -54,6 +80,20 @@ describe('Task tests', function () {
         assert.equal(tr.warningIssues, 0, "should have no warnings");
         assert.equal(tr.errorIssues.length, 1, "should have 1 error issue");
         assert.equal(tr.errorIssues[0], 'Input required: package', 'error issue output');
+
+        done();
+    });
+
+    it('Package path does not contain a package', (done: MochaDone) => {
+        this.timeout(1000);
+        let tp = path.join(__dirname, 'FailurePackagePathDoesNotContainPackage.js');
+        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+        tr.run();
+        assert.equal(tr.succeeded, false, 'should have failed');
+        assert.equal(tr.warningIssues, 0, "should have no warnings");
+        assert.equal(tr.errorIssues.length, 1, "should have 1 error issue");
+        assert.equal(tr.errorIssues[0], '[!] Invalid filename null', 'error issue output');
 
         done();
     });

@@ -1,6 +1,8 @@
 import * as path from 'path';
 import {PackageDetails} from "../Interfaces/PackageDetails";
-import {NuGetArtifactAPI} from "../Providers/NuGetArtifactAPI";
+import {ArtifactAPI} from "../Providers/ArtifactAPI";
+import {ArtifactResponse} from "../Interfaces/ArtifactInterfaces";
+import {NPMArtifactAPI} from "../Providers/NPMArtifactAPI";
 
 export interface IPackageService
 {
@@ -16,11 +18,20 @@ export interface IPackageService
      * @param feedId Id of the feed
      * @param viewId
      * @param packageDetails
+     * @param feedType
      */
     promote(
         feedId:string,
         viewId:string,
-        packageDetails:PackageDetails) : Promise<any>;
+        packageDetails:PackageDetails,
+        feedType:string) : Promise<any>;
+
+    /**
+     * Get the protocol type
+     * @param feedId Id of the feed the package is under
+     */
+    getPackageProtocolType(
+        feedId:string) : Promise<string>
 }
 
 export class PackageService implements IPackageService
@@ -31,15 +42,12 @@ export class PackageService implements IPackageService
      */
     public getPackageDetailsFromPath(
         packagePath: string) : PackageDetails {
-        if (!this.pathContainsValidPackage(packagePath))
-            throw new Error("[!] A valid path has not been specified.");
 
         let fullFileName = packagePath.replace(/^.*[\\\/]/, '');
         if(fullFileName == null)
             throw new Error("[!] Invalid filename: " + fullFileName);
 
         let fileName = path.parse(fullFileName).name;
-        let extension = path.parse(fullFileName).ext;
 
         let regexGroup: RegExpMatchArray = fileName.match(/^([a-zA-Z09.]+)[.](\S*)/);
 
@@ -49,7 +57,7 @@ export class PackageService implements IPackageService
         let name: string = regexGroup[1];
         let version: string = regexGroup[2];
 
-        return new PackageDetails(name, version, extension);
+        return new PackageDetails(name, version);
     }
 
     /**
@@ -58,28 +66,36 @@ export class PackageService implements IPackageService
      * @param viewId
      * @param viewId
      * @param packageDetails
+     * @param feedType
      */
     public async promote(
         feedId:string,
         viewId:string,
-        packageDetails:PackageDetails) : Promise<any> {
+        packageDetails:PackageDetails,
+        feedType:string) : Promise<any> {
         return new Promise<any> (async(resolve, reject) => {
             try
             {
-                switch(packageDetails.extension)
+                if(feedType == "nuget" || feedType == "upack" || feedType == "pypi")
                 {
-                    case ".nupkg":
-                        let nuGetArtifactAPI = new NuGetArtifactAPI();
-                        resolve((await nuGetArtifactAPI.updatePackageVersion(
-                            feedId,
-                            viewId,
-                            packageDetails)));
-                        break;
-
-                    default:
-                        reject(new Error("Package not supported: "+packageDetails.extension));
-                        break;
+                    let artifactAPI = new ArtifactAPI();
+                    resolve((await artifactAPI.updatePackageVersion(
+                        feedId,
+                        viewId,
+                        packageDetails,
+                        feedType)));
                 }
+                else if(feedType == "npm")
+                {
+                    let npmArtifactAPI = new NPMArtifactAPI();
+                    resolve((await npmArtifactAPI.updatePackageVersion(
+                        feedId,
+                        viewId,
+                        packageDetails,
+                        feedType)));
+                }
+                else
+                    throw new Error("Feed type: " + feedType + " is not supported");
             }
             catch(error)
             {
@@ -88,11 +104,34 @@ export class PackageService implements IPackageService
         });
     }
 
-    private pathContainsValidPackage(
-        packagePath: string) : boolean {
-        if (!packagePath || !packagePath.trim())
-            return false;
+    /**
+     * Get the protocol type for the the specified feed
+     * @param feedId Id of the feed
+     */
+    public getPackageProtocolType(
+        feedId: string): Promise<string> {
+        return new Promise<string> (async(resolve, reject) => {
+            try
+            {
+                let artifactAPI = new ArtifactAPI();
+                let packages:ArtifactResponse = await artifactAPI.getPackages(
+                    feedId);
 
-        return packagePath.endsWith(".nupkg");
+                if(packages.count <= 0)
+                    throw new Error("Could not determine feedtype, please make sure the packages exists within the feed");
+
+                resolve(packages.value[0].protocolType.toLowerCase());
+            }
+            catch(error)
+            {
+                reject(error);
+            }
+        });
+    }
+
+    static isFeedTypeSupported(
+        feedType:string):boolean
+    {
+        return feedType == "nuget" || feedType == "upack" || feedType == "pypi" || feedType == "npm";
     }
 }

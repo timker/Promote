@@ -1,3 +1,15 @@
+export interface ArtifactResponse
+{
+    count: number
+
+    value: Package[]
+}
+
+export interface Package
+{
+    protocolType:string
+}
+
 export interface RequestBody {
     /**
      * Indicates the listing state of a package
