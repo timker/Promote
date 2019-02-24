@@ -1,20 +1,20 @@
-### 1.5.0 24/02/2019
+### 1.5.0 - 24/02/2019
 * Add support for all 3 vsts formats and throw an error when it's an on premise vsts
 * Update tests to stop using obsolete methods
 
-### 1.4.0 24/02/2019 
+### 1.4.0 - 24/02/2019 
 * Add support for Python packages
 * Add support for NPM packages
 * Remove support for UPack from checks
 
-### 1.3.1 18/02/2019
+### 1.3.1 - 18/02/2019
 * Update readme supported section  
 
-### 1.3.0 18/02/2019
+### 1.3.0 - 18/02/2019
 * Add support for NPM, Python, and Universal  
 * Refactor code to deal with protocol types and move nuget functionality artifact provider  
 
-### 1.2.0 16/02/2019
+### 1.2.0 - 16/02/2019
 * Add support for wildcard paths
 
 ### 1.1.1 - 15/02/2019
