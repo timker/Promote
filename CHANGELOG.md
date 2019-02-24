@@ -1,3 +1,7 @@
+### 1.5.0 24/02/2019
+* Add support for all 3 vsts formats and throw an error when it's an on premise vsts
+* Update tests to stop using obsolete methods
+
 ### 1.4.0 24/02/2019 
 * Add support for Python packages
 * Add support for NPM packages

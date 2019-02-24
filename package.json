@@ -1,6 +1,6 @@
 {
   "name": "promote",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Update NuGet packages.",
   "main": "./promote-package/Task.js",
   "scripts": {

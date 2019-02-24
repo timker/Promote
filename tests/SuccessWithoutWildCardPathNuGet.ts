@@ -21,7 +21,7 @@ tmr.setAnswers(answers);
 tmr.setInput('feed', 'feed-id');
 tmr.setInput('view', 'view-id');
 tmr.setInput('package', "c:\\workspace\\artifact\\*.nupkg");
-process.env["SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"] = "https://dev.visualstudio.com/abc/";
+process.env["SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"] = "https://dev.azure.com/abc/";
 process.env['ENDPOINT_AUTH_SYSTEMVSSCONNECTION'] = "{\"parameters\":{\"AccessToken\":\"token\"},\"scheme\":\"OAuth\"}";
 
 nock('https://pkgs.dev.azure.com',

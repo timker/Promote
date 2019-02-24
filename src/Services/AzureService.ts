@@ -11,15 +11,17 @@ export class AzureService
         if(teamFoundationServerUri == null || teamFoundationServerUri.trim() == "")
             throw new Error ("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI is not set");
 
-        let regexGroup: RegExpMatchArray = teamFoundationServerUri.match(/(?:http[s]*:\/\/)(?:.*)(?:\/)(.*)(?:\/)/);
+        let regexGroup: RegExpMatchArray;
 
-        if (regexGroup == null || regexGroup.length != 2)
-        {
+        if(teamFoundationServerUri.includes('dev.azure.com'))
+            regexGroup = teamFoundationServerUri.match(/(?:http[s]*:\/\/)(?:.*)(?:\/)(.*)(?:\/)/);
+        else if(teamFoundationServerUri.includes('visualstudio.com'))
             regexGroup = teamFoundationServerUri.match(/(?:http[s]*:\/\/)(.[^.]*)(?:.*)/);
+        else
+            throw new Error("On premise not supported.");
 
-            if(regexGroup == null || regexGroup.length != 2)
-                throw new Error("Organization name could not be found.");
-        }
+        if(regexGroup == null || regexGroup.length != 2)
+            throw new Error("Organization name could not be found.");
 
         console.log(`Organisation name: ${regexGroup[1]}`);
 
