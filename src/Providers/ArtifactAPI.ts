@@ -90,7 +90,7 @@ export class ArtifactAPI extends ClientBase implements IArtifactAPI
                     null);
 
                 if(packageResponse.statusCode > 299)
-                    new Error(`Unsuccessful request, status code:${packageResponse.statusCode}`);
+                    throw new Error(`Unsuccessful request, status code:${packageResponse.statusCode}`);
 
                 resolve(packageResponse.result);
             }

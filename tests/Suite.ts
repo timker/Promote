@@ -42,6 +42,32 @@ describe('Task tests', function () {
         done();
     });
 
+    it('NPM package path contains wild card success', (done: MochaDone) => {
+        this.timeout(1000);
+
+        let tp = path.join(__dirname, 'SuccessWildCardPathNpm.js');
+        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+        tr.run();
+        assert.equal(tr.succeeded, true, 'should have succeeded');
+        assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+        assert.equal(tr.errorIssues.length, 0, "should have no errors");
+        done();
+    });
+
+    it('Python package path contains wild card success', (done: MochaDone) => {
+        this.timeout(1000);
+
+        let tp = path.join(__dirname, 'SuccessWildCardPathPython.js');
+        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+        tr.run();
+        assert.equal(tr.succeeded, true, 'should have succeeded');
+        assert.equal(tr.warningIssues.length, 0, "should have no warnings");
+        assert.equal(tr.errorIssues.length, 0, "should have no errors");
+        done();
+    });
+
     it('Feed input not set', (done: MochaDone) => {
         this.timeout(1000);
         let tp = path.join(__dirname, 'FailureFeedInputNotSet.js');
@@ -108,6 +134,20 @@ describe('Task tests', function () {
         assert.equal(tr.warningIssues, 0, "should have no warnings");
         assert.equal(tr.errorIssues.length, 1, "should have 1 error issue");
         assert.equal(tr.errorIssues[0], 'SYSTEM_TEAMFOUNDATIONCOLLECTIONURI is not set', 'error issue output');
+
+        done();
+    });
+
+    it('Feed type is not supported', (done: MochaDone) => {
+        this.timeout(1000);
+        let tp = path.join(__dirname, 'FailureFeedTypeIsNotSupported.js');
+        let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
+
+        tr.run();
+        assert.equal(tr.succeeded, false, 'should have failed');
+        assert.equal(tr.warningIssues, 0, "should have no warnings");
+        assert.equal(tr.errorIssues.length, 1, "should have 1 error issue");
+        assert.equal(tr.errorIssues[0], 'Feed type:upack is not supported', 'error issue output');
 
         done();
     });

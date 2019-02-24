@@ -4,11 +4,10 @@ Promote packages on VSTS
 [Changes](./CHANGELOG.md)  
 
 ### About  
-Supported packages are:  
+Supported feed types:  
 * NuGet  
 * NPM  
-* Python  
-* Universal  
+* Python
 
 ### Usage  
 Pre-conditions:  

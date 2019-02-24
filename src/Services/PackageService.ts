@@ -1,4 +1,3 @@
-import * as path from 'path';
 import {PackageDetails} from "../Interfaces/PackageDetails";
 import {ArtifactAPI} from "../Providers/ArtifactAPI";
 import {ArtifactResponse} from "../Interfaces/ArtifactInterfaces";
@@ -9,9 +8,11 @@ export interface IPackageService
     /**
      * Get details from the package
      * @param packagePath Path to the package
+     * @param feedType
      */
     getPackageDetailsFromPath(
-        packagePath: string) : PackageDetails;
+        packagePath: string,
+        feedType: string) : PackageDetails;
 
     /**
      * Promote the respective package.
@@ -39,23 +40,43 @@ export class PackageService implements IPackageService
     /**
      * Gets the details of the package artifact
      * @param packagePath Path to the package artifact
+     * @param feedType
      */
     public getPackageDetailsFromPath(
-        packagePath: string) : PackageDetails {
+        packagePath: string,
+        feedType: string) : PackageDetails {
 
-        let fullFileName = packagePath.replace(/^.*[\\\/]/, '');
-        if(fullFileName == null)
-            throw new Error("[!] Invalid filename: " + fullFileName);
+        let fileName = packagePath.replace(/^.*[\\\/]/, '');
+        if(fileName == null)
+            throw new Error("[!] Invalid full filename: " + fileName);
 
-        let fileName = path.parse(fullFileName).name;
+        let regexGroup: RegExpMatchArray;
 
-        let regexGroup: RegExpMatchArray = fileName.match(/^([a-zA-Z09.]+)[.](\S*)/);
+        switch (feedType) {
+            case "nuget" :
+                regexGroup = fileName.match(/^(.*?)\.((?:\.?[0-9]+){3,}(?:[-a-z]+)?)\.nupkg$/);
+                break;
 
-        if (regexGroup == null || regexGroup.length != 3)
+            case "npm" :
+                regexGroup = fileName.match(/^(.*?)-((?:\.?[0-9]+){3,}(?:[-a-z]+)?)\.tgz$/);
+                break;
+
+            case "pypi" :
+                regexGroup = fileName.match(/^(.*?)-([._0-9a-zA-Z]+)(?:-(.*))\.whl$/);
+                break;
+
+            default :
+                throw new Error("Package not supported");
+        }
+
+        if (regexGroup == null || regexGroup.length < 3)
             throw new Error("[!] Invalid filename " + regexGroup);
 
         let name: string = regexGroup[1];
         let version: string = regexGroup[2];
+
+        console.log(`Package name: ${name}`);
+        console.log(`Package version: ${version}`);
 
         return new PackageDetails(name, version);
     }
@@ -63,10 +84,9 @@ export class PackageService implements IPackageService
     /**
      * Promote the respective package.
      * @param feedId Id of the feed
-     * @param viewId
-     * @param viewId
-     * @param packageDetails
-     * @param feedType
+     * @param viewId Id of the view
+     * @param packageDetails Details of the package
+     * @param feedType Type of the feed
      */
     public async promote(
         feedId:string,
@@ -76,7 +96,7 @@ export class PackageService implements IPackageService
         return new Promise<any> (async(resolve, reject) => {
             try
             {
-                if(feedType == "nuget" || feedType == "upack" || feedType == "pypi")
+                if(feedType == "nuget" || feedType == "pypi")
                 {
                     let artifactAPI = new ArtifactAPI();
                     resolve((await artifactAPI.updatePackageVersion(
@@ -118,7 +138,7 @@ export class PackageService implements IPackageService
                     feedId);
 
                 if(packages.count <= 0)
-                    throw new Error("Could not determine feedtype, please make sure the packages exists within the feed");
+                    throw new Error("Could not determine feedtype, please make sure the packages exists within the feed.");
 
                 resolve(packages.value[0].protocolType.toLowerCase());
             }
@@ -132,6 +152,6 @@ export class PackageService implements IPackageService
     static isFeedTypeSupported(
         feedType:string):boolean
     {
-        return feedType == "nuget" || feedType == "upack" || feedType == "pypi" || feedType == "npm";
+        return feedType == "nuget" || feedType == "pypi" || feedType == "npm";
     }
 }

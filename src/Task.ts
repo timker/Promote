@@ -24,7 +24,9 @@ async function run() {
 
         let foundPackagePath: string = AzureService.expandPackageWildcardPatterns(packagePath);
 
-        let packageDetails = packageService.getPackageDetailsFromPath(foundPackagePath);
+        let packageDetails = packageService.getPackageDetailsFromPath(
+            foundPackagePath,
+            feedType);
 
         await packageService.promote(
             feedId,
