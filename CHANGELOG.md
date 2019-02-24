@@ -1,3 +1,8 @@
+### 1.4.0 24/02/2019 
+* Add support for Python packages
+* Add support for NPM packages
+* Remove support for UPack from checks
+
 ### 1.3.1 18/02/2019
 * Update readme supported section  
 
