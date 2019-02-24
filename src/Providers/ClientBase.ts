@@ -3,7 +3,7 @@ import {HttpClientResponse, HttpCodes} from "typed-rest-client/HttpClient";
 import {IRequestOptions as RestClientIRequestOptions, IRestResponse} from "typed-rest-client/RestClient";
 import {AzureService} from "../Services/AzureService";
 import {getEndpointAuthorization}  from "azure-pipelines-task-lib/task";
-import {BearerCredentialHandler} from "typed-rest-client/Handlers";
+import {getHandlerFromToken} from "azure-devops-node-api";
 
 export interface IClientBase
 {
@@ -134,7 +134,7 @@ export class ClientBase implements IClientBase
     }
 
     public createHandlers(): IRequestHandler[] {
-        let handlers: IRequestHandler[] = [new BearerCredentialHandler(this.getAuthToken())];
+        let handlers: IRequestHandler[] = [getHandlerFromToken(this.getAuthToken())];
         return handlers;
     }
 

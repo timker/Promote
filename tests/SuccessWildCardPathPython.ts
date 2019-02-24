@@ -32,7 +32,7 @@ nock('https://pkgs.dev.azure.com',
     .patch('/abc/_apis/packaging/feeds/feed-id/pypi/packages/package_python/versions/1.0.1?api-version=5.0-preview.1')
     .reply(200);
 
-nock('https://pkgs.dev.azure.com',
+nock('https://feeds.dev.azure.com',
     {
         reqheaders:{
             "user-agent": "haplo-promote"

@@ -39,7 +39,7 @@ export class ArtifactAPI extends ClientBase implements IArtifactAPI
 
                 let restClient = new RestClient(
                     "haplo-promote",
-                    "https://pkgs.dev.azure.com",
+                    "https://feeds.dev.azure.com",
                     handlers,
                     options);
 

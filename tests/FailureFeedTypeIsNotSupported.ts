@@ -23,7 +23,7 @@ tmr.setInput('package', "c:\\workspace\\artifact\\*.nupkg");
 process.env["SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"] = "https://dev.azure.com/abc/";
 process.env['ENDPOINT_AUTH_SYSTEMVSSCONNECTION'] = "{\"parameters\":{\"AccessToken\":\"token\"},\"scheme\":\"OAuth\"}";
 
-nock('https://pkgs.dev.azure.com',
+nock('https://feeds.dev.azure.com',
     {
         reqheaders:{
             "user-agent": "haplo-promote"
