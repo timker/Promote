@@ -49,10 +49,10 @@ export class ClientBase implements IClientBase
     public createRequestHeaders(
         apiVersion?: string):IHeaders
     {
-        let headers = {} as IHeaders;
-        headers["accept"] = this.createAcceptHeader('application/json', apiVersion);
-        headers["Content-Type"] = "application/json";
-        return headers;
+        return {
+            accept: this.createAcceptHeader('application/json', apiVersion),
+            ["Content-Type"] : "application/json"
+        };
     }
 
     public dateTimeDeserializer(
@@ -133,10 +133,8 @@ export class ClientBase implements IClientBase
         });
     }
 
-    public createHandlers(): IRequestHandler[] {
-        let handlers: IRequestHandler[] = [getHandlerFromToken(this.getAuthToken())];
-        return handlers;
-    }
+
+    public createHandlers = () => [getHandlerFromToken(this.getAuthToken())];
 
     private getAuthToken():string{
         let auth = getEndpointAuthorization('SYSTEMVSSCONNECTION', false);
@@ -145,5 +143,4 @@ export class ClientBase implements IClientBase
         }
         throw new Error("SYSTEMVSSCONNECTION is not valid");
     }
-
 }

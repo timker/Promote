@@ -44,14 +44,14 @@ export interface JsonPatchOperation {
     value: string
 }
 
-export class Operation {
-    public static add: string = "add";
-    public static copy: string = "copy";
-    public static move: string = "move";
-    public static remove: string = "remove";
-    public static replace: string = "replace";
-    public static test: string = "test";
-}
+export const Operation = {
+    add:  "add",
+    copy:  "copy",
+    move:  "move",
+    remove:  "remove",
+    replace:  "replace",
+    test:  "test"
+ } as const;
 
 export interface RequestBody {
     /**

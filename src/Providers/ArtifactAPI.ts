@@ -5,7 +5,7 @@ import {ArtifactResponse,JsonPatchOperation, Operation, RequestBody} from "../In
 import {PackageDetails} from "../Interfaces/PackageDetails";
 import {HttpClient} from "typed-rest-client/HttpClient";
 
-export interface IArtifactAPI
+export interface IArtifactApi
 {
     getPackages(
         feedId:string
@@ -18,100 +18,77 @@ export interface IArtifactAPI
         protocolType:string):Promise<void>;
 }
 
-export class ArtifactAPI extends ClientBase implements IArtifactAPI
+export class ArtifactApi extends ClientBase implements IArtifactApi
 {
     constructor()
     {
         super();
     }
 
-    public getPackages(
-        feedId: string) : Promise<ArtifactResponse>
+    public async getPackages(feedId: string): Promise<ArtifactResponse>
     {
-        return new Promise<ArtifactResponse> (async(resolve, reject) => {
-            try
-            {
-                let apiVersion = "5.0-preview.1";
+        const apiVersion = "5.0-preview.1";
 
-                let options:IRequestOptions = this.createRequestOptions(apiVersion);
+        const options:IRequestOptions = this.createRequestOptions(apiVersion);
+        const handlers:IRequestHandler[] = this.createHandlers();
 
-                let handlers:IRequestHandler[] = this.createHandlers();
+        const restClient = new RestClient(
+            "haplo-promote",
+            "https://feeds.dev.azure.com",
+            handlers,
+            options);
 
-                let restClient = new RestClient(
-                    "haplo-promote",
-                    "https://feeds.dev.azure.com",
-                    handlers,
-                    options);
+        const pathAndQuery = `/${this.OrganizationName}/_apis/packaging/Feeds/${feedId}/packages?api-version=${apiVersion}`;
 
-                let pathAndQuery = `/${this.OrganizationName}/_apis/packaging/Feeds/${feedId}/packages?api-version=${apiVersion}`;
+        const response = await restClient.get<ArtifactResponse>(pathAndQuery);
 
-                let response = await restClient.get<ArtifactResponse>(pathAndQuery);
-
-                resolve(response.result)
-            }
-            catch (error)
-            {
-                reject(error);
-            }
-        });
+        return response.result;
     }
 
     public async updatePackageVersion(
         feedId:string,
         viewId:string,
         packageDetails:PackageDetails,
-        protocolType:string): Promise<void> {
-        return new Promise<void> (async(resolve, reject) => {
-            try
-            {
-                let apiVersion = "5.0-preview.1";
+        protocolType:string): Promise<void> 
+    {   
+        const apiVersion = "5.0-preview.1";
 
-                let options: IHeaders = this.createRequestOptions(
-                    apiVersion);
+        const options: IHeaders = this.createRequestOptions(apiVersion);
 
-                let handlers: IRequestHandler[] = this.createHandlers();
+        const handlers: IRequestHandler[] = this.createHandlers();
 
-                let httpClient = new  HttpClient(
-                    "haplo-promote",
-                    handlers,
-                    options);
+        const httpClient = new HttpClient(
+            "haplo-promote",
+            handlers,
+            options);
 
-                let requestData = ArtifactAPI.createAddRequestBody(viewId);
+        const requestData = ArtifactApi.createAddRequestBody(viewId);
 
-                let headers = this.createRequestHeaders(apiVersion);
+        const headers = this.createRequestHeaders(apiVersion);
 
-                let response = await httpClient.patch(
-                    `https://pkgs.dev.azure.com/${this.OrganizationName}/_apis/packaging/feeds/${feedId}/${protocolType}/packages/${packageDetails.name}/versions/${packageDetails.version}?api-version=${apiVersion}`,
-                    JSON.stringify(requestData),
-                    headers);
+        const response = await httpClient.patch(
+            `https://pkgs.dev.azure.com/${this.OrganizationName}/_apis/packaging/feeds/${feedId}/${protocolType}/packages/${packageDetails.name}/versions/${packageDetails.version}?api-version=${apiVersion}`,
+            JSON.stringify(requestData),
+            headers);
 
-                let packageResponse = await this.processResponse<void>(
-                    response,
-                    null);
+        const packageResponse = await this.processResponse<void>(response, null);
 
-                if(packageResponse.statusCode > 299)
-                    throw new Error(`Unsuccessful request, status code:${packageResponse.statusCode}`);
+        if(packageResponse.statusCode > 299)
+            throw new Error(`Unsuccessful request, status code:${packageResponse.statusCode}`);
 
-                resolve(packageResponse.result);
-            }
-            catch (error)
-            {
-                reject(error);
-            }
-        });
+        return packageResponse.result;
     }
 
-    static createAddRequestBody(
-        viewId: string):RequestBody
-    {
-        let patchOperation: JsonPatchOperation = {} as JsonPatchOperation;
-        patchOperation.op = Operation.add;
-        patchOperation.path = "/views/-";
-        patchOperation.value = viewId;
-
-        let requestData: RequestBody = {} as RequestBody;
-        requestData.listed = null;
-        requestData.views = patchOperation;
-        return requestData;
+    static createAddRequestBody = (viewId: string): RequestBody =>
+    {        
+        return {
+            views:{
+                op: Operation.add,
+                path: "/views/-",
+                value: viewId,
+                from: null
+            },
+            listed: null
+        };
     }
 }

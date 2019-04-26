@@ -1,7 +1,7 @@
 import {PackageDetails} from "../Interfaces/PackageDetails";
-import {ArtifactAPI} from "../Providers/ArtifactAPI";
+import {ArtifactApi} from "../Providers/ArtifactApi";
 import {ArtifactResponse} from "../Interfaces/ArtifactInterfaces";
-import {NPMArtifactAPI} from "../Providers/NPMArtifactAPI";
+import {NpmArtifactApi} from "../Providers/NpmArtifactApi";
 
 export interface IPackageService
 {
@@ -93,64 +93,45 @@ export class PackageService implements IPackageService
         viewId:string,
         packageDetails:PackageDetails,
         feedType:string) : Promise<any> {
-        return new Promise<any> (async(resolve, reject) => {
-            try
-            {
-                if(feedType == "nuget" || feedType == "pypi")
-                {
-                    let artifactAPI = new ArtifactAPI();
-                    resolve((await artifactAPI.updatePackageVersion(
-                        feedId,
-                        viewId,
-                        packageDetails,
-                        feedType)));
-                }
-                else if(feedType == "npm")
-                {
-                    let npmArtifactAPI = new NPMArtifactAPI();
-                    resolve((await npmArtifactAPI.updatePackageVersion(
-                        feedId,
-                        viewId,
-                        packageDetails,
-                        feedType)));
-                }
-                else
-                    throw new Error("Feed type: " + feedType + " is not supported");
-            }
-            catch(error)
-            {
-                reject(error);
-            }
-        });
+
+        if(feedType == "nuget" || feedType == "pypi") {
+            let artifactAPI = new ArtifactApi();
+            return await artifactAPI.updatePackageVersion(
+                feedId,
+                viewId,
+                packageDetails,
+                feedType);
+        
+        } else if(feedType == "npm") {
+
+            let npmArtifactAPI = new NpmArtifactApi();
+            return await npmArtifactAPI.updatePackageVersion(
+                feedId,
+                viewId,
+                packageDetails,
+                feedType);
+        
+        } else
+            throw new Error("Feed type: " + feedType + " is not supported");
     }
 
     /**
      * Get the protocol type for the the specified feed
      * @param feedId Id of the feed
      */
-    public getPackageProtocolType(
+    public async getPackageProtocolType(
         feedId: string): Promise<string> {
-        return new Promise<string> (async(resolve, reject) => {
-            try
-            {
-                let artifactAPI = new ArtifactAPI();
-                let packages:ArtifactResponse = await artifactAPI.getPackages(
-                    feedId);
 
-                if(packages.count <= 0)
-                    throw new Error("Could not determine feedtype, please make sure the packages exists within the feed.");
+        let artifactAPI = new ArtifactApi();
+        let packages:ArtifactResponse = await artifactAPI.getPackages(feedId);
 
-                resolve(packages.value[0].protocolType.toLowerCase());
-            }
-            catch(error)
-            {
-                reject(error);
-            }
-        });
+        if(packages.count <= 0)
+            throw new Error("Could not determine feedtype, please make sure the packages exists within the feed.");
+
+        return packages.value[0].protocolType.toLowerCase();
     }
 
-    static isFeedTypeSupported(
-        feedType:string):boolean
+    static isFeedTypeSupported(feedType:string):boolean
     {
         return feedType == "nuget" || feedType == "pypi" || feedType == "npm";
     }
